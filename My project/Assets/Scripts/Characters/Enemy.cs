@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public class Enemy : Character
@@ -7,15 +8,10 @@ public class Enemy : Character
 
     private float distanceToPlayer;
 
-    public Enemy()
-    {
-
-    }
-
     private void Start()
     {
-        health = 10;
         movementSpeed = 1;
+        maxHealth = 10;
 
         damage = 1;
         attackRange = 3f;
@@ -24,8 +20,10 @@ public class Enemy : Character
         attackTime = 0;
 
         player = GameObject.Find("Player");
-
         playerLocation = player.GetComponent<Transform>();
+        CinemachineImpulseSource impulseSource = GetImpulseSource();
+
+        SetHealth();
     }
 
     private void Update()
@@ -36,7 +34,6 @@ public class Enemy : Character
         {
             distanceToPlayer = Vector3.Distance(transform.position, playerLocation.position);
             
-            // Beweeg naar de speler
             Move(playerLocation.position, movementSpeed);
         }
 
@@ -46,15 +43,7 @@ public class Enemy : Character
             {
                 Attack(player, damage);
                 attackTime = 0;
-                Debug.Log("test");
             }
-            
         }
-    }
-
-    protected override void TakeDamage(int damageAmount)
-    {
-        // Add enemy-specific damage handling logic here
-        base.TakeDamage(damage); // Call the base class method to handle common logic
     }
 }

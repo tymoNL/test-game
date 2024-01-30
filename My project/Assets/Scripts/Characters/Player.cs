@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
+using Cinemachine;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class Player : Character
 {
@@ -11,20 +8,24 @@ public class Player : Character
     private float horizontalInput;
     private float verticalInput;
 
-    protected override void TakeDamage(int damageAmount)
-    {
-        // Add player-specific damage handling logic here
-        base.TakeDamage(damage); // Call the base class method to handle common logic
-    }
-
     private void Start()
     {
-        enemy = GameObject.Find("Enemy");
+        maxHealth = 10;
         
-        health = 10;
         movementSpeed = 1;
         rotationSpeed = 5;
+        
         damage = 1;
+        
+        enemy = GameObject.Find("Enemy");
+        CinemachineImpulseSource impulseSource = GetImpulseSource();
+
+        if (impulseSource == null)
+        {
+            Debug.LogError("CinemachineImpulseSource component not found in children of the Character GameObject");
+        }
+
+        SetHealth();
     }
 
     private void Update()
@@ -37,7 +38,6 @@ public class Player : Character
             Attack(enemy, damage);
         }
     }
-
     private void PlayerMovement()
     {
         horizontalInput = Input.GetAxis("Horizontal");
@@ -48,6 +48,4 @@ public class Player : Character
 
         transform.Rotate(horizontalInput * rotationSpeed * Time.deltaTime * Vector3.up);
     }
-
-
 }

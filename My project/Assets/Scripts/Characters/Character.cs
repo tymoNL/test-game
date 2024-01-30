@@ -1,20 +1,27 @@
+using Cinemachine;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [Header("Health")]
     [SerializeField] protected int health;
     [SerializeField] protected int maxHealth;
 
+    [Header("Attack")]
     [SerializeField] protected int damage;
     [SerializeField] protected float attackRange;
     [SerializeField] protected float attackSpeed;
     [SerializeField] protected float attackCooldown;
     [SerializeField] protected float attackTime;
 
+    [Header("Movement")]
     [SerializeField] protected int movementSpeed;
     [SerializeField] protected int rotationSpeed;
 
-
+    protected CinemachineImpulseSource GetImpulseSource()
+    {
+        return GetComponentInChildren<CinemachineImpulseSource>();
+    }
 
     public virtual void Move(Vector3 destination, float speed)
     {
@@ -22,7 +29,7 @@ public class Character : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
     }
 
-    protected void SetHealth(int maxHealth)
+    protected void SetHealth()
     {
         health = maxHealth;
     }
@@ -50,10 +57,22 @@ public class Character : MonoBehaviour
         {
             Death();
         }
+
+        CameraShake();
     }
 
     protected virtual void Death()
     {
         Destroy(gameObject);
+    }
+
+    protected void CameraShake()
+    {
+        CinemachineImpulseSource impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
+
+        if (impulseSource != null)
+        {
+            impulseSource.GenerateImpulse(); // Adjust parameters as needed
+        }
     }
 }
