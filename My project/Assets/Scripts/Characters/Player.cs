@@ -5,6 +5,9 @@ public class Player : Character
 {
     private GameObject enemy;
 
+    public CharacterController controller;
+    public Transform cam;
+
     private float horizontalInput;
     private float verticalInput;
 
@@ -12,9 +15,9 @@ public class Player : Character
     {
         maxHealth = 10;
         
-        movementSpeed = 1;
-        rotationSpeed = 5;
-        
+        movementSpeed = 6;
+        rotationTime = 0.1f;
+
         damage = 1;
         
         enemy = GameObject.Find("Enemy");
@@ -40,12 +43,19 @@ public class Player : Character
     }
     private void PlayerMovement()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
 
-        transform.Translate(Time.deltaTime * verticalInput * Vector3.forward);
-        transform.Translate(horizontalInput * Time.deltaTime * Vector3.right);
+        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
 
-        transform.Rotate(horizontalInput * rotationSpeed * Time.deltaTime * Vector3.up);
+        if (direction.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationSpeed, rotationTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(moveDir.normalized * movementSpeed * Time.deltaTime);
+        }
     }
 }

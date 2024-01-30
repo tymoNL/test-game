@@ -16,7 +16,8 @@ public class Character : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] protected int movementSpeed;
-    [SerializeField] protected int rotationSpeed;
+    [SerializeField] protected float rotationSpeed;
+    [SerializeField] protected float rotationTime;
 
     public HealthBar healthBar;
 
