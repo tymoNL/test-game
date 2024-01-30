@@ -59,6 +59,7 @@ MonoBehaviour:
   attackTime: 0
   movementSpeed: 0
   rotationSpeed: 0
+  healthBar: {fileID: 5974082222911953325, guid: f2dd9624949957f4da92225e70521dab, type: 3}
 --- !u!33 &8184819023317663499
 MeshFilter:
   m_ObjectHideFlags: 0

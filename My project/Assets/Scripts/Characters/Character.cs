@@ -18,6 +18,8 @@ public class Character : MonoBehaviour
     [SerializeField] protected int movementSpeed;
     [SerializeField] protected int rotationSpeed;
 
+    public HealthBar healthBar;
+
     protected CinemachineImpulseSource GetImpulseSource()
     {
         return GetComponentInChildren<CinemachineImpulseSource>();
@@ -32,6 +34,7 @@ public class Character : MonoBehaviour
     protected void SetHealth()
     {
         health = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     protected virtual void Attack(GameObject target, int damage)
@@ -59,6 +62,7 @@ public class Character : MonoBehaviour
         }
 
         CameraShake();
+        healthBar.SetHealth(health);
     }
 
     protected virtual void Death()
