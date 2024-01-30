@@ -33,6 +33,7 @@ public class Player : Character
 
     private void Update()
     {
+
         PlayerMovement();
 
         // Mouse pressed
@@ -56,6 +57,9 @@ public class Player : Character
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * movementSpeed * Time.deltaTime);
+
+            Debug.Log("Player position: " + transform.position);
+            Debug.Log("Move direction: " + moveDir);
         }
     }
 }
